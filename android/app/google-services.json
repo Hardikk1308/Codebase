@@ -1,0 +1,29 @@
+//{
+//  "project_info": {
+//    "project_number": "687209010800",
+//    "project_id": "shikshasutram-testing",
+//    "storage_bucket": "shikshasutram-testing.firebasestorage.app"
+//  },
+//  "client": [
+//    {
+//      "client_info": {
+//        "mobilesdk_app_id": "1:687209010800:android:727679f42e0881a1b286b5",
+//        "android_client_info": {
+//          "package_name": "com.shikshasutram"
+//        }
+//      },
+//      "oauth_client": [],
+//      "api_key": [
+//        {
+//          "current_key": "AIzaSyBfuMzbmAZFUm7OsrTxCOu9mLnP_XJ2m_0"
+//        }
+//      ],
+//      "services": {
+//        "appinvite_service": {
+//          "other_platform_oauth_client": []
+//        }
+//      }
+//    }
+//  ],
+//  "configuration_version": "1"
+//}
