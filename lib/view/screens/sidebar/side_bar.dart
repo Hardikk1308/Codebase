@@ -532,12 +532,16 @@ import '../edit_profile/edit_profile_screen.dart';
 import '../module/choose_module.dart';
 import '../parents/parents_screen.dart';
 import '../teacher/teacher_screen.dart';
+
 /// controller
 import 'package:get/get.dart';
 
 class SidebarMenu extends StatefulWidget {
   /*final LoginResponse? loginResponse;*/
-  const SidebarMenu({super.key, /*this.loginResponse*/});
+  const SidebarMenu({
+    super.key,
+    /*this.loginResponse*/
+  });
 
   @override
   State<SidebarMenu> createState() => _SidebarMenuState();
@@ -548,7 +552,7 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
   final LoginService loginService = LoginService();
   User? _user;
   String? savedusername = "";
-  String? moduleSelected="";
+  String? moduleSelected = "";
   Future<void> _initializeLogin() async {
     // Fetch username from SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -560,23 +564,27 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
       // Fetch login response with saved username
       setState(() {
         savedusername = savedUsername;
-        loginResponse = LoginResponse.fromJson(jsonDecode(prefs.getString('user') ?? '{}'));
+        loginResponse =
+            LoginResponse.fromJson(jsonDecode(prefs.getString('user') ?? '{}'));
       });
       print("The login response - student: ${loginResponse}");
     } else {
       print("No username found in SharedPreferences.");
     }
   }
+
   /// Load user data from SharedPreferences.
   Future<void> _loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userJson = prefs.getString('user');
     if (userJson != null) {
       setState(() {
-        loginResponse = LoginResponse.fromJson(jsonDecode(prefs.getString('user') ?? '{}'));
+        loginResponse =
+            LoginResponse.fromJson(jsonDecode(prefs.getString('user') ?? '{}'));
       });
     }
   }
+
   /// Refresh user data when the app resumes.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -584,6 +592,7 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
       _loadUserData();
     }
   }
+
   final sharedPrefController = Get.find<SharedPrefController>();
   @override
   void initState() {
@@ -592,18 +601,19 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
     _initializeLogin();
     _loadUserData();
     Get.put(SharedPrefController()).loadUserData();
-
   }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.82,
-      backgroundColor: Colors.blueAccent,   // Need finalize later for menu colors
+      backgroundColor: Colors.blueAccent, // Need finalize later for menu colors
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -633,56 +643,64 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
                         ),
                       ),
                       SizedBox(width: 10),
-                      loginResponse == null ? CircularProgressIndicator(
-                        color: Colors.blue,
-                      ) : Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Obx(() =>   Text(
-                            "${sharedPrefController.userData['user']['firstName'] ?? ''} ${sharedPrefController.userData['user']['lastName'] ?? ''} ", /*loginResponse?.user.username ?? '',*/
-                              style: interMedium.copyWith(
-                                  color: Theme.of(context).disabledColor,
-                                  fontSize: 16,
-                                  overflow: TextOverflow.ellipsis
-                              ),
-                              maxLines: 1,
-                            ),),
-                            Text(
-                              moduleSelected == 'teacher' ? '${loginResponse?.user.moreDetails.email}' : 'Grade: ${loginResponse?.user.moreDetails.grade}- Section: ${loginResponse?.user.moreDetails.section}',
-                              style: interMedium.copyWith(
-                                  color: Theme.of(context).disabledColor,
-                                  fontSize: 12,
-                                  overflow: TextOverflow.ellipsis
-                              ),
-                              maxLines: 1,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  moduleSelected == 'teacher' ? "view_teacher_profile".tr : "view_profile".tr,
-                                  style: interMedium.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 14,
+                      loginResponse == null
+                          ? CircularProgressIndicator(
+                              color: Colors.blue,
+                            )
+                          : Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      "${sharedPrefController.userData['user']['firstName'] ?? ''} ${sharedPrefController.userData['user']['lastName'] ?? ''} ",
+                                      /*loginResponse?.user.username ?? '',*/
+                                      style: interMedium.copyWith(
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          fontSize: 16,
+                                          overflow: TextOverflow.ellipsis),
+                                      maxLines: 1,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(
-                                  Icons.arrow_circle_right,
-                                  size: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      )
+                                  Text(
+                                    moduleSelected == 'teacher'
+                                        ? '${loginResponse?.user.moreDetails.email}'
+                                        : 'Grade: ${loginResponse?.user.moreDetails.grade}- Section: ${loginResponse?.user.moreDetails.section}',
+                                    style: interMedium.copyWith(
+                                        color: Theme.of(context).disabledColor,
+                                        fontSize: 12,
+                                        overflow: TextOverflow.ellipsis),
+                                    maxLines: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        moduleSelected == 'teacher'
+                                            ? "view_teacher_profile".tr
+                                            : "view_profile".tr,
+                                        style: interMedium.copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_circle_right,
+                                        size: 16,
+                                        color: Theme.of(context).primaryColor,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                            )
                     ],
                   ),
                 ),
@@ -691,7 +709,8 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
           ),
           SidebarMenuButton(
             title: 'Edit profile'.tr,
-            icon: "assets/images/edit-profile.png",color: Colors.white,
+            icon: "assets/images/edit-profile.png",
+            color: Colors.white,
             onPressed: () {
               // Get.to(StudentProfileScreen());
               _initializeLogin();
@@ -768,10 +787,11 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
             title: 'logout'.tr,
             icon: Images.logoutPng,
             onPressed: () async {
-               SharedPreferences prefs = await SharedPreferences.getInstance();
-               // await prefs.clear();
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              // await prefs.clear();
               if (savedusername!.isNotEmpty) {
-                String? userType = prefs.getString('type'); // User type fetch karo
+                String? userType =
+                    prefs.getString('type'); // User type fetch karo
                 await prefs.remove('username');
                 await prefs.remove('type');
                 await prefs.remove('user');
@@ -788,7 +808,7 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
                   ),
                 );
 
-             Get.offAll(ChooseModuleScreen());
+                Get.offAll(ChooseModuleScreen());
                 // User type check karke redirect karo
                 // if (userType == "student") {
                 //   Get.off(() => LoginScreen(title: "student"));
@@ -798,15 +818,15 @@ class _SidebarMenuState extends State<SidebarMenu> with WidgetsBindingObserver {
               }
             },
           ),
-
         ],
       ),
     );
   }
+
   void _navigateBasedOnType(String type) {
     switch (type.toLowerCase()) {
       case 'student':
-        Get.offAll(() =>  DashboardScreen());
+        Get.offAll(() => DashboardScreen());
         break;
       case 'parent':
         Get.offAll(() => ParentsScreen());

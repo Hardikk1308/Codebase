@@ -67,8 +67,6 @@ import 'package:erp_school/utils/app_constant.dart';
 import 'package:erp_school/utils/messages.dart';
 import 'package:erp_school/view/screens/dashboard/DashboradController.dart';
 import 'package:erp_school/view/screens/sidebar/side_bar.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erp_school/helper/get_di.dart' as di;
@@ -82,7 +80,7 @@ import 'firebase_options.dart'; // Ensure this file exists!
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //  Firebase Initialize
+  //  Firebase Initialize 
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // FCM (Firebase Cloud Messaging) Initialize

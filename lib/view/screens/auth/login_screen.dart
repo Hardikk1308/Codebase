@@ -1,4 +1,3 @@
-
 import 'package:erp_school/services/login_service.dart';
 import 'package:erp_school/utils/dimensions.dart';
 import 'package:erp_school/utils/images.dart';
@@ -10,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/response/login_response.dart';
 import '../../../services/School_service.dart';
-
 
 class LoginScreen extends StatefulWidget {
   final String title;
@@ -29,10 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-   handleLoginStatus() async {
+  handleLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? schoolId = await SchoolService.getSchoolId();
-
 
     String responseMessage = await LoginService.fetchLoginResponse(
       username: userController.text.trim(),
@@ -41,69 +38,71 @@ class _LoginScreenState extends State<LoginScreen> {
       type: widget.title.toLowerCase(),
     );
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar( content: Text(responseMessage),backgroundColor: Colors.green,),
+      SnackBar(
+        content: Text(responseMessage),
+        backgroundColor: Colors.green,
+      ),
     );
   }
 
-
   ///this is correct code ///
   /*void handleLoginStatus() async {
-    int? schoolId = await SchoolService.getSchoolId();
+      int? schoolId = await SchoolService.getSchoolId();
 
-    // 🛠 API Call for Login Response
-    String responseMessage = await LoginService.fetchLoginResponse(
-      username: userController.text.trim(),
-      password: passController.text.trim(),
-      schoolId: schoolId,
-      type: widget.passScreenType.toLowerCase(), // ✅ This is the user-chosen type
-    );
+      // 🛠 API Call for Login Response
+      String responseMessage = await LoginService.fetchLoginResponse(
+        username: userController.text.trim(),
+        password: passController.text.trim(),
+        schoolId: schoolId,
+        type: widget.passScreenType.toLowerCase(), // ✅ This is the user-chosen type
+      );
 
-    if (!responseMessage.toLowerCase().contains("success")) {
-      _showSnackBar(responseMessage, Colors.red);
-      return;
-    }
-
-    // 🛠 Fetch Updated User Data from API Response
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userJson = prefs.getString('user');
-
-    if (userJson == null || userJson.isEmpty) {
-      _showSnackBar("Error: User data not found after login!", Colors.red);
-      return;
-    }
-
-    try {
-      LoginResponse loginResponse = LoginResponse.fromJson(jsonDecode(userJson));
-      User? user = loginResponse.user;
-
-      if (user == null || user.roles.isEmpty) {
-        _showSnackBar("Invalid User: No roles assigned!", Colors.red);
+      if (!responseMessage.toLowerCase().contains("success")) {
+        _showSnackBar(responseMessage, Colors.red);
         return;
       }
 
-      print("User Roles from API: ${user.roles}");
-      print("Selected PassUserType: ${widget.passScreenType}");
+      // 🛠 Fetch Updated User Data from API Response
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final userJson = prefs.getString('user');
 
-      // ✅ Check Role Matching using API Response
-      bool typeMatches = user.roles.any((role) =>
-      role.toLowerCase() == widget.passScreenType.toLowerCase());
-
-      if (!typeMatches) {
-        _showSnackBar(
-          "Unauthorized Access! Your role (${user.roles.join(', ')}) doesn't match ${widget.passScreenType}.",
-          Colors.red,
-        );
+      if (userJson == null || userJson.isEmpty) {
+        _showSnackBar("Error: User data not found after login!", Colors.red);
         return;
       }
 
-      // ✅ Redirect to Dashboard after verification
-      _showSnackBar("Login Successful!", Colors.green);
-      Get.offAll(() => DashboardScreen());
+      try {
+        LoginResponse loginResponse = LoginResponse.fromJson(jsonDecode(userJson));
+        User? user = loginResponse.user;
 
-    } catch (e) {
-      _showSnackBar("Error parsing user data: $e", Colors.red);
-    }
-  }*/
+        if (user == null || user.roles.isEmpty) {
+          _showSnackBar("Invalid User: No roles assigned!", Colors.red);
+          return;
+        }
+
+        print("User Roles from API: ${user.roles}");
+        print("Selected PassUserType: ${widget.passScreenType}");
+
+        // ✅ Check Role Matching using API Response
+        bool typeMatches = user.roles.any((role) =>
+        role.toLowerCase() == widget.passScreenType.toLowerCase());
+
+        if (!typeMatches) {
+          _showSnackBar(
+            "Unauthorized Access! Your role (${user.roles.join(', ')}) doesn't match ${widget.passScreenType}.",
+            Colors.red,
+          );
+          return;
+        }
+
+        // ✅ Redirect to Dashboard after verification
+        _showSnackBar("Login Successful!", Colors.green);
+        Get.offAll(() => DashboardScreen());
+
+      } catch (e) {
+        _showSnackBar("Error parsing user data: $e", Colors.red);
+      }
+    }*/
 
   ///this code is working but not perfect tested show i have commented this code
   ///and before testing uncommented this code.
@@ -169,9 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //   }
   // }
 
-
-
-// Helper method to show SnackBar
+  // Helper method to show SnackBar
   void _showSnackBar(String message, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -182,11 +179,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        backgroundColor: Theme
-            .of(context)
-            .cardColor,
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).cardColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,16 +191,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: Get.height * 0.35,
                 width: Get.width,
                 decoration: BoxDecoration(
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .onSecondary,
+                    color: Theme.of(context).primaryColor,
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.purple],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(100),
-                      bottomRight: Radius.circular(100),
+                      bottomLeft: Radius.circular(80),
+                      bottomRight: Radius.circular(80),
                     )),
-                child: Center(
-                  child: Image.asset(Images.modulePng),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 30,
+                  ),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(100),
+                        bottomRight: Radius.circular(100),
+                      ),
+                      child: Image.asset(Images.modulePng),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
@@ -214,12 +223,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 'login_title'.tr,
                 style: interMedium.copyWith(
                   fontSize: Dimensions.fontSizeExtraLarge,
-                  color: Theme
-                      .of(context)
-                      .disabledColor,
+                  color: Theme.of(context).disabledColor,
                 ),
               ),
-             // Text("data : -  ${widget.passScreenType}"),
+              // Text("data : -  ${widget.passScreenType}"),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: Text(
@@ -227,9 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                   style: interRegular.copyWith(
                     fontSize: Dimensions.fontSizeSmall,
-                    color: Theme
-                        .of(context)
-                        .hintColor,
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
               ),
@@ -240,6 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       CustomTextField(
+                        radius: 10,
                         controller: userController,
                         required: true,
                         validator: (value) {
@@ -251,15 +257,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         prefixIcon: Icon(
                           Icons.person,
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Colors.black,
                           size: 20,
                         ),
                         title: 'user_name'.tr,
                         hintText: 'enter_your_user_name'.tr,
                       ),
                       CustomTextField(
+                        radius: 10,
+                        focusNode: FocusNode(),
                         controller: passController,
                         required: true,
                         validator: (value) {
@@ -274,9 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         maxLines: 1,
                         prefixIcon: Icon(
                           Icons.lock_outline_rounded,
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                         title: 'password'.tr,
@@ -290,21 +294,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Checkbox(
                                 value: _isChecked,
-                                activeColor: Theme
-                                    .of(context)
+                                activeColor: Theme.of(context)
                                     .colorScheme
                                     .primary, // Selected color
                                 fillColor:
-                                WidgetStateProperty.resolveWith<Color>(
+                                    WidgetStateProperty.resolveWith<Color>(
                                         (states) {
-                                      if (states.contains(
-                                          WidgetState.selected)) {
-                                        return Theme
-                                            .of(context)
-                                            .primaryColor; // Selected color
-                                      }
-                                      return Colors.white; // Unselected color
-                                    }),
+                                  if (states.contains(WidgetState.selected)) {
+                                    return Theme.of(context)
+                                        .primaryColor; // Selected color
+                                  }
+                                  return Colors.white; // Unselected color
+                                }),
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _isChecked = value ?? false;
@@ -315,9 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Text(
                                 'remember_me'.tr,
                                 style: interMedium.copyWith(
-                                    color: Theme
-                                        .of(context)
-                                        .hintColor,
+                                    color: Theme.of(context).hintColor,
                                     fontSize: 14),
                               ),
                             ],
@@ -329,8 +328,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               // SharedPreferences prefs = await SharedPreferences
                               //     .getInstance();
                               // await prefs.setString('student', "Student");
-                             // Get.to(() =>
-                             // const ChangePassword(title: 'student',));
+                              // Get.to(() =>
+                              // const ChangePassword(title: 'student',));
                               //   ;
                               // } else {
                               // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -343,13 +342,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               'forgot_password'.tr,
                               style: interRegular.copyWith(
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                   fontSize: 14),
                             ),
                           ),
-
                         ],
                       ),
                       25.h,
@@ -388,6 +384,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}

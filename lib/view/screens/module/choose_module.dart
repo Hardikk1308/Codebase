@@ -54,22 +54,34 @@ class _ChooseModuleScreenState extends State<ChooseModuleScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: Get.height * 0.35,
-              width: Get.width,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(100),
-                    bottomRight: Radius.circular(100),
-                  )),
-              child: Center(
-                child: Image.asset(
-                  Images.modulePng,
-                  width: 200, // specify the width
-                  height: 200, // specify the height
+                height: Get.height * 0.35,
+                width: Get.width,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.purple],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(80),
+                      bottomRight: Radius.circular(80),
+                    )),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 30,
+                  ),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(100),
+                        bottomRight: Radius.circular(100),
+                      ),
+                      child: Image.asset(Images.modulePng),
+                    ),
+                  ),
                 ),
               ),
-            ),
             SizedBox(
               height: 30,
             ),
